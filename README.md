@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Votelyze
 
-## Getting Started
+Votelyzeは、誰でも簡単に投票を作成し、共有できるWebアプリケーションです。
 
-First, run the development server:
+## Docs
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- [📝 要件定義](./docs/requirements.md) - プロジェクトの機能要件と技術要件
+
+## Directory Structure
+
+```
+src/
+├── app/                       # Next.js App Router directory
+│   ├── layout.tsx            # Root layout with providers and global components
+│   ├── page.tsx              # Root page
+│   ├── main-navigation.tsx   # App-specific navigation component
+│   └── [feature]/            # Feature-specific routes and components
+├── components/                # Shared UI components (e.g., Button, Card)
+├── features/                  # Feature-specific business logic and components
+│   └── [feature]/
+│       ├── components/       # Feature-specific components
+│       ├── lib/              # Feature-specific utilities and business logic
+│       ├── route.ts          # Feature route handler
+│       └── page.tsx          # Feature page component
+└── lib/                       # Shared utilities and configurations
+    ├── db/                    # Database configuration and schema
+    └── utils.ts               # Shared utility functions
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Package by Feature
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This project follows the "Package by Feature" approach rather than "Package by Layer". This means:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Code is organized around business features rather than technical layers
+- Each feature is self-contained with its own components, logic, and types
+- Reduces coupling between features
+- Makes the codebase more maintainable and scalable
+- Easier to understand the business domain
+- Facilitates parallel development
 
-## Learn More
+For example, instead of:
+```
+src/
+├── components/    # All components
+├── services/     # All services
+└── utils/        # All utilities
+```
 
-To learn more about Next.js, take a look at the following resources:
+We organize by feature:
+```
+src/features/
+├── auth/         # Authentication feature
+├── feeds/        # Feed management feature
+└── collections/  # Collection management feature
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Directory Structure Conventions
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **App Router (`src/app/`)**
+   - Contains Next.js pages and layouts
+   - App-specific components that are tightly coupled with the app structure (e.g., main-navigation.tsx)
+   - Each route can have its own components directly in its directory
 
-## Deploy on Vercel
+2. **Shared Components (`src/components/`)**
+   - Reusable UI components only
+   - Should be feature-agnostic
+   - Examples: Button, Card, Input, etc.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Features (`src/features/`)**
+   - Organized by feature/domain
+   - Contains all feature-specific code (components, logic, types)
+   - Each feature is self-contained and can be moved/refactored easily
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. **Shared Libraries (`src/lib/`)**
+   - Shared utilities, configurations, and types
+   - Database and external service configurations
+   - Helper functions used across features
+
+### File Naming Conventions
+
+- React Components: kebab-case (e.g., `login-button.tsx`)
+- Other files: kebab-case (e.g., `main-navigation.tsx`, `use-auth.ts`)
+- Next.js special files: as per Next.js conventions (e.g., `layout.tsx`, `page.tsx`)
+
+### Import Conventions
+
+- Use absolute imports with `@/` prefix for non-relative imports
+- Use relative imports for files within the same feature/module
+- Keep import paths as short as possible while maintaining clarity
