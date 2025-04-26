@@ -1,12 +1,9 @@
-import { PGlite } from "@electric-sql/pglite";
-import { drizzle } from "drizzle-orm/pglite";
-import * as schema from "./schema";
+import { client as productionClient, db as productionDB } from "./client";
+import { initInMemoryDB } from "./client-in-memory";
 
-// PGLiteのインスタンスを作成（In-Memory）
-const client = new PGlite();
+const isTest = process.env.NODE_ENV === "test";
+const isDevelopment = process.env.NODE_ENV === "development";
 
-// DrizzleORMのインスタンスを作成
-export const db = drizzle({ client, schema });
-
-// データベースクライアントのエクスポート（マイグレーション等で使用）
-export { client };
+// テスト環境または開発環境の場合はIn-Memoryデータベースを使用
+export const { db, client } =
+  isTest || isDevelopment ? await initInMemoryDB() : { db: productionDB, client: productionClient };
