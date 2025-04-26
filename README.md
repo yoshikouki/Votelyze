@@ -10,21 +10,21 @@ Votelyzeは、誰でも簡単に投票を作成し、共有できるWebアプリ
 
 ```
 src/
-├── app/                       # Next.js App Router directory
-│   ├── layout.tsx            # Root layout with providers and global components
-│   ├── page.tsx              # Root page
-│   ├── main-navigation.tsx   # App-specific navigation component
-│   └── [feature]/            # Feature-specific routes and components
-├── components/                # Shared UI components (e.g., Button, Card)
-├── features/                  # Feature-specific business logic and components
+├── app/                    # Next.js App Router directory
+│   ├── layout.tsx         # Root layout with providers and global components
+│   ├── page.tsx           # Root page
+│   ├── main-navigation.tsx # App-specific navigation component
+│   └── [feature]/         # Feature-specific pages and routes
+│       ├── page.tsx       # Feature main page
+│       └── [...]/         # Additional feature pages
+├── components/            # Shared UI components (e.g., Button, Card)
+├── features/             # Feature-specific business logic and components
 │   └── [feature]/
-│       ├── components/       # Feature-specific components
-│       ├── lib/              # Feature-specific utilities and business logic
-│       ├── route.ts          # Feature route handler
-│       └── page.tsx          # Feature page component
-└── lib/                       # Shared utilities and configurations
-    ├── db/                    # Database configuration and schema
-    └── utils.ts               # Shared utility functions
+│       ├── components/   # Feature-specific UI components
+│       └── *.ts         # Feature-specific business logic, types, and utilities
+└── lib/                 # Shared utilities and configurations
+    ├── db/             # Database configuration and schema
+    └── utils.ts        # Shared utility functions
 ```
 
 ### Package by Feature
@@ -49,17 +49,52 @@ src/
 We organize by feature:
 ```
 src/features/
-├── auth/         # Authentication feature
-├── feeds/        # Feed management feature
-└── collections/  # Collection management feature
+├── auth/              # Authentication feature
+│   ├── components/    # Auth-specific UI components
+│   ├── auth.ts       # Auth business logic
+│   ├── types.ts      # Auth-specific types
+│   └── utils.ts      # Auth-specific utilities
+├── votes/            # Voting feature
+│   ├── components/   # Vote-specific UI components
+│   ├── votes.ts     # Vote business logic
+│   └── types.ts     # Vote-specific types
+└── collections/      # Collection management feature
+```
+
+And corresponding pages:
+```
+src/app/
+├── auth/
+│   ├── page.tsx     # Sign in page
+│   ├── signup/      # Sign up flow
+│   └── settings/    # Auth settings
+├── votes/
+│   ├── page.tsx     # Votes list
+│   ├── [id]/        # Individual vote
+│   └── create/      # Vote creation
+└── collections/
 ```
 
 ### Directory Structure Conventions
 
 1. **App Router (`src/app/`)**
    - Contains Next.js pages and layouts
-   - App-specific components that are tightly coupled with the app structure (e.g., main-navigation.tsx)
-   - Each route can have its own components directly in its directory
+   - Feature-specific pages and routes
+   - Follows Next.js routing conventions
+   - Each feature can have multiple pages and nested routes
+   - 主な責務：
+     - URLやリクエストパラメーターの検証
+     - Cookieやヘッダーからのセッション読み取り
+     - 認証・認可の確認（ログイン要求・リダイレクトなど）
+     - 適切な feature のロジックの呼び出し
+   - 具体的な実装：
+     - Next.js のページコンポーネント
+     - ミドルウェアやルートハンドラー
+     - レイアウトコンポーネント
+   - このレイヤーでは以下を行わない：
+     - 複雑なビジネスロジック（features/ に置く）
+     - UIコンポーネントの実装（components/ に置く）
+     - データベースアクセス（features/ のロジック経由で行う）
 
 2. **Shared Components (`src/components/`)**
    - Reusable UI components only
@@ -68,7 +103,9 @@ src/features/
 
 3. **Features (`src/features/`)**
    - Organized by feature/domain
-   - Contains all feature-specific code (components, logic, types)
+   - Contains all feature-specific code
+   - Only UI components are separated into a `components/` directory
+   - Other feature-specific code (business logic, types, utilities) lives directly in the feature directory
    - Each feature is self-contained and can be moved/refactored easily
 
 4. **Shared Libraries (`src/lib/`)**

@@ -1,6 +1,6 @@
 ---
-description:
-globs:
+description: 
+globs: 
 alwaysApply: false
 ---
 # Project Structure Guide
@@ -18,19 +18,33 @@ The codebase is organized around business features rather than technical layers.
 The source code is organized in the `src` directory with the following structure:
 
 ### App Router (`src/app/`)
-- Next.js pages and layouts
-- App-specific components tightly coupled with app structure
-- Feature-specific routes in `[feature]/` directories
-- Contains files like:
-  - `layout.tsx` - Root layout with providers
-  - `page.tsx` - Root page
-  - `main-navigation.tsx` - App navigation
+- Contains Next.js pages and layouts
+- Feature-specific pages and routes
+- Follows Next.js routing conventions
+- Each feature can have multiple pages and nested routes
+- リクエスト・ルーティングを処理するレイヤー
+- 主な責務：
+  - URLやリクエストパラメータの検証
+  - Cookieやヘッダーからのセッション読み取り
+  - 認証・認可の確認（ログイン要求・リダイレクトなど）
+  - 適切な feature のロジックの呼び出し
+- 具体的な実装：
+  - Next.js のページコンポーネント
+  - ミドルウェアやルートハンドラー
+  - レイアウトコンポーネント
+- このレイヤーでは以下を行わない：
+  - 複雑なビジネスロジック（features/ に置く）
+  - UIコンポーネントの実装（components/ に置く）
+  - データベースアクセス（features/ のロジック経由で行う）
 
 ### Features (`src/features/`)
-Each feature has its own directory containing:
-- `components/` - Feature-specific components
-- `lib/` - Feature-specific utilities and business logic
-- `page.tsx` - Feature page component
+Each feature directory contains:
+- `components/` - Feature-specific UI components only
+- Feature-specific business logic, types, and utilities directly in the feature directory
+- Example files:
+  - `auth.ts` - Core business logic
+  - `types.ts` - Feature-specific types
+  - `utils.ts` - Feature-specific utilities
 
 ### Shared Components (`src/components/`)
 - Reusable UI components only
