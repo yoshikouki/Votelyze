@@ -117,6 +117,7 @@ function Carousel({
       <div
         onKeyDownCapture={handleKeyDown}
         className={cn("relative", className)}
+        // biome-ignore lint/a11y/useSemanticElements: This is a shadcn/ui component
         role="region"
         aria-roledescription="carousel"
         data-slot="carousel"
