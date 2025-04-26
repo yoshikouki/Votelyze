@@ -6,7 +6,7 @@ const uniqueTitle = `test-poll-${Date.now()}`;
 
 describe("pollsRepository", () => {
   it("create() should insert a poll and return the created poll", async () => {
-    const poll = await pollsRepository.create(uniqueTitle);
+    const poll = await pollsRepository.create({ title: uniqueTitle });
     expect(poll).toBeDefined();
     expect(poll.title).toBe(uniqueTitle);
     expect(typeof poll.id).toBe("number");
