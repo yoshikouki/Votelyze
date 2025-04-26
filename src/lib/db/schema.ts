@@ -19,6 +19,7 @@ import {
   text,
   timestamp,
   unique,
+  varchar,
 } from "drizzle-orm/pg-core";
 
 /* ---------- Polls ---------------------------------- */
@@ -27,8 +28,8 @@ export const voteModeEnum = pgEnum("vote_mode", ["single", "multi"]);
 
 export const polls = pgTable("polls", {
   id: serial("id").primaryKey(),
-  title: text("title").notNull(),
-  description: text("description"),
+  title: varchar("title", { length: 100 }).notNull(),
+  description: varchar("description", { length: 1000 }),
   status: pollStatusEnum("status").default("open").notNull(),
   voteMode: voteModeEnum("vote_mode").default("single").notNull(),
   expiresAt: timestamp("expires_at").default(sql`now() + interval '7 days'`).notNull(),
@@ -47,7 +48,7 @@ export const pollOptions = pgTable(
     pollId: integer("poll_id")
       .references(() => polls.id)
       .notNull(),
-    label: text("label").notNull(),
+    label: varchar("label", { length: 100 }).notNull(),
     orderKey: integer("order_key").notNull(), // 10,20,…で並び替え
   },
   (t) => ({

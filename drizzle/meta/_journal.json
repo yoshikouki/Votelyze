@@ -8,6 +8,13 @@
       "when": 1745647510548,
       "tag": "0000_curved_sue_storm",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1745655007403,
+      "tag": "0001_set_max_length_to_columns",
+      "breakpoints": true
     }
   ]
 }

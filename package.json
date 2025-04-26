@@ -13,11 +13,11 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "db:generate": "drizzle-kit generate --config ./drizzle.config.ts --name",
-    "db:migrate": "drizzle-kit migrate",
-    "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio",
-    "db:check": "drizzle-kit check",
-    "db:drop": "drizzle-kit drop"
+    "db:migrate": "drizzle-kit migrate --config ./drizzle.config.ts",
+    "db:push": "drizzle-kit push --config ./drizzle.config.ts",
+    "db:studio": "drizzle-kit studio --config ./drizzle.config.ts",
+    "db:check": "drizzle-kit check --config ./drizzle.config.ts",
+    "db:drop": "drizzle-kit dro --config ./drizzle.config.tsp"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.3.0",
