@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Workaround for https://github.com/biomejs/biome/issues/5641
+node_modules
+.pnp
+coverage
+.next
+out
+build
