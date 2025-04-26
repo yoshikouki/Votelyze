@@ -124,3 +124,15 @@ src/app/
 - Use absolute imports with `@/` prefix for non-relative imports
 - Use relative imports for files within the same feature/module
 - Keep import paths as short as possible while maintaining clarity
+
+### Repository & Test Structure
+
+- **Repository Pattern**: Each feature can have a `repository.ts` (e.g. `polls.repository.ts`) to encapsulate all DB access and persistence logic for that feature. This keeps business logic and DB操作の責務を分離し、テストや保守性を高めます。
+- **Test Files**: Repositoryのテストは同じディレクトリに `*.repository.test.ts` で配置します。
+
+例:
+```
+src/features/polls/
+├── polls.repository.ts         # Polls用のDB操作を集約
+├── polls.repository.test.ts    # Repositoryの単体テスト
+```
